@@ -20,4 +20,6 @@ namespace VacationOwnershipApi.Models
 
         public virtual ICollection<Sales> Sales { get; set; }
     }
+
+
 }
