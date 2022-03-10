@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using VacationOwnershipApi.Models;
 
 namespace VacationOwnershipApi.Controllers
@@ -45,5 +46,36 @@ namespace VacationOwnershipApi.Controllers
 
             }
         }
+
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Unit>> GetUnit(int id)
+        {
+            var database = await _context.Unit.FindAsync(id);
+
+            if (database == null)
+            {
+                return NotFound();
+            }
+
+            return database;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var data = await _context.Unit.FindAsync(id);
+
+            if (data == null)
+            {
+                return NotFound();
+            }
+
+            _context.Unit.Remove(data);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
+

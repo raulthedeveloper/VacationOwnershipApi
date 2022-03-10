@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using VacationOwnershipApi.Models;
 
 namespace VacationOwnershipApi.Controllers
@@ -30,11 +31,20 @@ namespace VacationOwnershipApi.Controllers
         }
 
         [HttpPut("id")]
-        public IActionResult Put([FromBody] Employees employee, int id)
+        public IActionResult Put(int id, [FromBody] Employees employee)
         {
+            
+
             using (var db = _context)
             {
+
+                
                 var selectedEmployee = db.Employees.Where(u => u.Id == id).FirstOrDefault();
+
+                if (id != employee.Id)
+                {
+                    return BadRequest();
+                }
 
                 selectedEmployee.FirstName = employee.FirstName;
                 selectedEmployee.LastName = employee.LastName;
@@ -44,5 +54,36 @@ namespace VacationOwnershipApi.Controllers
 
             return Ok(employee);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Employees>> Get(int id)
+        {
+            var database = await _context.Employees.FindAsync(id);
+
+            if (database == null)
+            {
+                return NotFound();
+            }
+
+            return database;
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            _context.Employees.Remove(employee);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
     }
 }
