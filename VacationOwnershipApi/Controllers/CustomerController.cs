@@ -21,7 +21,15 @@ namespace VacationOwnershipApi.Controllers
             
         }
 
-      
+        [HttpPost]
+        public IActionResult Post([FromBody] Customers data)
+        {
+            _context.Customers.Add(data);
+            _context.SaveChanges();
+            return Ok(data);
+        }
+
+
 
 
         [HttpGet("{id}")]

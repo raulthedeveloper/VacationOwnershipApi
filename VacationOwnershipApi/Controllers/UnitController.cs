@@ -47,9 +47,18 @@ namespace VacationOwnershipApi.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult Post([FromBody] Unit data)
+        {
+            _context.Unit.Add(data);
+            _context.SaveChanges();
+            return Ok(data);
+        }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Unit>> GetUnit(int id)
+
+        [HttpGet("singleunit/{id}")]
+
+        public async Task<ActionResult<Unit>> SingleUnit(int id)
         {
             var database = await _context.Unit.FindAsync(id);
 

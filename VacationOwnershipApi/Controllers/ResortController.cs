@@ -21,6 +21,14 @@ namespace VacationOwnershipApi.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult Post([FromBody] Resort resort)
+        {
+            _context.Resort.Add(resort);
+            _context.SaveChanges();
+            return  Ok(resort);
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -36,5 +44,21 @@ namespace VacationOwnershipApi.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("single-resort/{id}")]
+
+        public async Task<ActionResult<Resort>> SingleResort(int id)
+        {
+            var database = await _context.Resort.FindAsync(id);
+
+            if (database == null)
+            {
+                return NotFound();
+            }
+
+            return database;
+        }
     }
+
+
 }

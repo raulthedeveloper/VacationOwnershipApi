@@ -69,6 +69,21 @@ namespace VacationOwnershipApi.Controllers
         }
 
 
+        [HttpGet("single-employee/{id}")]
+
+        public async Task<ActionResult<Employees>> SingleEmployee(int id)
+        {
+            var database = await _context.Employees.FindAsync(id);
+
+            if (database == null)
+            {
+                return NotFound();
+            }
+
+            return database;
+        }
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
